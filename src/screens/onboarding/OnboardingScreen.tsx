@@ -13,6 +13,7 @@ import { ONBOARDING_DATA } from './OnboardingData';
 import OnboardingCard from './OnboardingCard';
 import OnboardingProgress from './OnboardingProgress';
 import CrossedButton from '../../components/CrossedButton';
+import { useNavigation } from '@react-navigation/native';
 
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,13 +22,11 @@ export default function OnboardingScreen() {
 
   const isLastPage =
     currentIndex === ONBOARDING_DATA.length - 1;
+  const navigation = useNavigation<any>();
 
   const handleNext = () => {
     if (isLastPage) {
-      Alert.alert(
-        'Introduction complete',
-        'You have completed the Crossed introduction.',
-      );
+      navigation.replace('Authentication');
       return;
     }
 
