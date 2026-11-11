@@ -48,8 +48,8 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     }
 
     Alert.alert(
-      'Demo mode',
-      'Your registration form is working. Backend registration is not connected yet.'
+      'Account creation isn’t available yet',
+      'Thank you for your interest in Crossed.'
     );
   };
 

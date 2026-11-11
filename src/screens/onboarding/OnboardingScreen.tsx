@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
+  Pressable,
   View,
   Text,
   StyleSheet,
-  Alert,
   SafeAreaView,
 } from 'react-native';
 
@@ -13,36 +13,39 @@ import { ONBOARDING_DATA } from './OnboardingData';
 import OnboardingCard from './OnboardingCard';
 import OnboardingProgress from './OnboardingProgress';
 import CrossedButton from '../../components/CrossedButton';
-import { useNavigation } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../../navigation/types';
 
-export default function OnboardingScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
+
+export default function OnboardingScreen({ navigation }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const currentItem = ONBOARDING_DATA[currentIndex];
 
   const isLastPage =
     currentIndex === ONBOARDING_DATA.length - 1;
-  const navigation = useNavigation<any>();
 
   const handleNext = () => {
     if (isLastPage) {
-      navigation.replace('Authentication');
+      navigation.replace('Authentication', { screen: 'Login' });
       return;
     }
 
-    setCurrentIndex(currentIndex + 1);
+    setCurrentIndex((index) => Math.min(index + 1, ONBOARDING_DATA.length - 1));
   };
 
   const handleBack = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
+    setCurrentIndex((index) => Math.max(index - 1, 0));
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.logo}>CROSSED</Text>
+        <Text style={styles.pageCount}>
+          {String(currentIndex + 1).padStart(2, '0')} / {String(ONBOARDING_DATA.length).padStart(2, '0')}
+        </Text>
       </View>
 
       <View style={styles.cardContainer}>
@@ -57,12 +60,15 @@ export default function OnboardingScreen() {
 
         <View style={styles.navigation}>
           {currentIndex > 0 ? (
-            <Text style={styles.backButton} onPress={handleBack}>
-              Back
-            </Text>
-          ) : (
-            <View />
-          )}
+            <Pressable
+              style={styles.backButton}
+              onPress={handleBack}
+              accessibilityRole="button"
+              accessibilityLabel="Go to previous introduction"
+            >
+              <Text style={styles.backButtonText}>Back</Text>
+            </Pressable>
+          ) : <View style={styles.backPlaceholder} />}
 
           <View style={styles.nextButton}>
             <CrossedButton
@@ -84,14 +90,25 @@ const styles = StyleSheet.create({
 
   header: {
     paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.lg,
+    paddingTop: SPACING.md,
+    minHeight: 58,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   logo: {
     color: COLORS.primary,
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '800',
-    letterSpacing: 4,
+    letterSpacing: 3.2,
+  },
+
+  pageCount: {
+    color: COLORS.muted,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.4,
   },
 
   cardContainer: {
@@ -100,8 +117,8 @@ const styles = StyleSheet.create({
 
   footer: {
     paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.xl,
-    gap: SPACING.xl,
+    paddingBottom: SPACING.lg,
+    gap: SPACING.lg,
   },
 
   navigation: {
@@ -111,10 +128,21 @@ const styles = StyleSheet.create({
   },
 
   backButton: {
+    minWidth: 96,
+    minHeight: 52,
+    justifyContent: 'center',
+    paddingHorizontal: SPACING.md,
+  },
+
+  backButtonText: {
     color: COLORS.primary,
-    fontSize: 16,
-    fontWeight: '600',
-    padding: SPACING.sm,
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
+  backPlaceholder: {
+    minWidth: 96,
+    minHeight: 52,
   },
 
   nextButton: {

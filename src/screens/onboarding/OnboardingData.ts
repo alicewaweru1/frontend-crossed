@@ -9,22 +9,22 @@ export const ONBOARDING_DATA: OnboardingItem[] = [
   {
     id: '1',
     label: 'INTRODUCTION',
-    title: 'Welcome to Crossed',
+    title: 'Connection deserves a little more care.',
     description:
-      'A thoughtful approach to building meaningful connections.',
+      'A meaningful connection starts when we make space to notice one another.',
   },
   {
     id: '2',
     label: 'OUR PHILOSOPHY',
-    title: 'Fewer profiles, better connections.',
+    title: 'Fewer introductions. More room to connect.',
     description:
-      'We believe meaningful experiences deserve more attention than endless scrolling.',
+      'We believe the best moments deserve more attention than an endless feed.',
   },
   {
     id: '3',
     label: 'THE EXPERIENCE',
-    title: 'Make every connection count.',
+    title: 'Meet with intention.',
     description:
-      'Discover an intentional, simple and thoughtfully designed experience.',
+      'Take your time with each story. Let curiosity lead the way.',
   },
 ];

@@ -1,7 +1,4 @@
-export type AuthStackParamList = {
-  Login: undefined;
-  Register: undefined;
-};
+export type { AuthStackParamList } from '../navigation/types';
 
 export interface AuthButtonProps {
   title: string;

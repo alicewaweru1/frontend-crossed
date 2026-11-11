@@ -42,8 +42,8 @@ export default function CrossedButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.primary,
-    paddingVertical: 16,
-    borderRadius: 20,
+    paddingVertical: 17,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -51,8 +51,9 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: COLORS.white,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
 
   disabled: {

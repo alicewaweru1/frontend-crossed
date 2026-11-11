@@ -16,8 +16,13 @@ import AuthButton from '../../components/AuthButton';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../types/auth';
+import type { CompositeScreenProps } from '@react-navigation/native';
+import type { RootStackParamList } from '../../navigation/types';
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'Login'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -36,8 +41,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     }
 
     Alert.alert(
-      'Demo mode',
-      'Your login form is working. Backend authentication is not connected yet.'
+      'Sign-in isn’t available yet',
+      'You can still explore the Crossed experience.'
     );
   };
 
@@ -98,7 +103,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             style={styles.forgotContainer}
             onPress={() =>
-              Alert.alert('Forgot password', 'Password recovery will be connected to the backend.')
+              Alert.alert('Password help', 'Password recovery isn’t available in this experience yet.')
             }
           >
             <Text style={styles.forgotText}>Forgot password?</Text>
@@ -111,7 +116,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Don't have an account?
+              Don&apos;t have an account?
             </Text>
 
             <TouchableOpacity
@@ -120,6 +125,14 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.registerText}> Create one</Text>
             </TouchableOpacity>
           </View>
+
+          <TouchableOpacity
+            style={styles.demoLink}
+            onPress={() => navigation.navigate('Demonstration')}
+            accessibilityRole="button"
+          >
+            <Text style={styles.demoLinkText}>Explore Crossed</Text>
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.bottomText}>
@@ -233,6 +246,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 30,
+  },
+
+  demoLink: {
+    alignItems: 'center',
+    paddingVertical: 18,
+    marginTop: 6,
+  },
+
+  demoLinkText: {
+    color: COLORS.primary,
+    fontSize: 14,
+    fontWeight: '700',
   },
 
   footerText: {

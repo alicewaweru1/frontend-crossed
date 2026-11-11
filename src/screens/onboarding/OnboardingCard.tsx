@@ -28,31 +28,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 32,
+    paddingVertical: 28,
   },
 
   label: {
-    color: COLORS.secondary,
-    fontSize: 12,
+    color: '#A87B21',
+    fontSize: 10,
     fontWeight: '700',
-    letterSpacing: 3,
-    marginBottom: 24,
+    letterSpacing: 2,
+    marginBottom: 28,
   },
 
   content: {
-    gap: 18,
+    gap: 16,
   },
 
   title: {
     color: COLORS.primary,
-    fontSize: 34,
+    fontSize: 38,
     fontWeight: '700',
-    lineHeight: 43,
+    lineHeight: 46,
+    letterSpacing: -0.8,
   },
 
   description: {
     color: COLORS.text,
     fontSize: 16,
-    lineHeight: 26,
+    lineHeight: 27,
   },
 });

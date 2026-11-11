@@ -3,8 +3,8 @@ const COLORS = {
   secondary: '#E8AE3A',
   background: '#F4F5F1',
   white: '#FFFFFF',
-  text: '#202820',
-  muted: '#89938B',
+  text: '#26332D',
+  muted: '#66736D',
   border: '#DDE3DC',
   error: '#C0392B',
 };
