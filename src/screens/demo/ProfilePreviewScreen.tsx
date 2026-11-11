@@ -13,11 +13,13 @@ import { COLORS } from '../../theme/colors';
 import { RADIUS, SPACING } from '../../theme/spacing';
 import { FEATURED_INTRODUCTION, INTRODUCTIONS } from './demoData';
 import { useDemoProfile } from '../../context/DemoProfileContext';
+import { useLocalConversations } from '../../context/LocalConversationsContext';
 
 type Props = NativeStackScreenProps<DemoStackParamList, 'ProfilePreview'>;
 
 export default function ProfilePreviewScreen({ route, navigation }: Props) {
   const { profile: sampleProfile, avatar } = useDemoProfile();
+  const { openConversation } = useLocalConversations();
   const isOwnPreview = !route.params?.profileId;
   const sample = INTRODUCTIONS.find((person) => person.id === route.params?.profileId);
   const profile = sample ?? FEATURED_INTRODUCTION;
@@ -80,11 +82,25 @@ export default function ProfilePreviewScreen({ route, navigation }: Props) {
             {qualities.map((item) => <Pill key={item}>{item}</Pill>)}
           </View>
           {!isOwnPreview ? (
-            <View style={styles.promptCard}>
-              <Text style={styles.promptLabel}>A QUESTION WORTH ASKING</Text>
-              <Text style={styles.prompt}>“{profile.prompt}”</Text>
-              <Text style={styles.response}>{profile.response}</Text>
-            </View>
+            <>
+              <View style={styles.promptCard}>
+                <Text style={styles.promptLabel}>A QUESTION WORTH ASKING</Text>
+                <Text style={styles.prompt}>“{profile.prompt}”</Text>
+                <Text style={styles.response}>{profile.response}</Text>
+              </View>
+              <Pressable
+                onPress={() => {
+                  openConversation(profile);
+                  navigation.navigate('Messaging', { profileId: profile.id });
+                }}
+                style={({ pressed }) => [styles.messageButton, pressed && styles.pressed]}
+                accessibilityRole="button"
+                accessibilityLabel={`Message ${profile.name}`}
+              >
+                <Text style={styles.messageIcon}>✉</Text>
+                <Text style={styles.messageButtonText}>Message</Text>
+              </Pressable>
+            </>
           ) : (
             <Pressable
               onPress={() => navigation.navigate('ProfileSetup')}
@@ -204,6 +220,25 @@ const styles = StyleSheet.create({
   editButtonText: {
     color: COLORS.primary,
     fontSize: 12,
+    fontWeight: '800',
+  },
+  messageButton: {
+    minHeight: 54,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.sm,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.primary,
+    marginTop: SPACING.xs,
+  },
+  messageIcon: {
+    color: COLORS.secondary,
+    fontSize: 17,
+  },
+  messageButtonText: {
+    color: COLORS.white,
+    fontSize: 14,
     fontWeight: '800',
   },
   pressed: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -15,41 +15,7 @@ import type { DemoStackParamList } from '../../navigation/types';
 import { COLORS } from '../../theme/colors';
 import { RADIUS, SPACING } from '../../theme/spacing';
 import { FEATURED_INTRODUCTION, INTRODUCTIONS } from './demoData';
-
-const DEMO_MESSAGES = [
-  {
-    id: 'm1',
-    sender: 'Wanjiku',
-    avatar: 'WM',
-    mine: false,
-    text: 'I love a slow Sunday with a walk, good coffee, and time to actually listen.',
-    time: '9:12 AM',
-  },
-  {
-    id: 'm2',
-    sender: 'You',
-    avatar: 'Y',
-    mine: true,
-    text: 'That sounds like a beautiful way to start the week. What kind of coffee do you usually go for?',
-    time: '9:14 AM',
-  },
-  {
-    id: 'm3',
-    sender: 'Wanjiku',
-    avatar: 'WM',
-    mine: false,
-    text: 'Something light and warm, honestly. I keep coming back to places with a window seat and good playlists.',
-    time: '9:15 AM',
-  },
-  {
-    id: 'm4',
-    sender: 'You',
-    avatar: 'Y',
-    mine: true,
-    text: 'That feels very us. I love the idea of a conversation that leaves room for the unexpected.',
-    time: '9:17 AM',
-  },
-];
+import { useLocalConversations } from '../../context/LocalConversationsContext';
 
 const PROMPTS = [
   'What is something you could talk about for hours?',
@@ -61,11 +27,20 @@ type Props = NativeStackScreenProps<DemoStackParamList, 'Messaging'>;
 
 export default function MessagingScreen({ navigation, route }: Props) {
   const [draft, setDraft] = useState('');
-  const [messages, setMessages] = useState(DEMO_MESSAGES);
   const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const {
+    messagesByProfile,
+    openConversation,
+    sendMessage: appendMessage,
+  } = useLocalConversations();
   const profile = INTRODUCTIONS.find(
     (person) => person.id === route.params?.profileId,
   ) ?? FEATURED_INTRODUCTION;
+  const messages = messagesByProfile[profile.id] ?? [];
+
+  useEffect(() => {
+    openConversation(profile);
+  }, [openConversation, profile]);
 
   const activePrompt = PROMPTS[activePromptIndex];
 
@@ -75,24 +50,14 @@ export default function MessagingScreen({ navigation, route }: Props) {
       return;
     }
 
-    setMessages((current) => [
-      ...current,
-      {
-        id: `m${Date.now()}`,
-        sender: 'You',
-        avatar: 'Y',
-        mine: true,
-        text: trimmed,
-        time: 'Now',
-      },
-    ]);
+    appendMessage(profile.id, trimmed);
     setDraft('');
   };
 
   return (
     <DemoScreenShell
       title="Thoughtful conversation."
-      subtitle="A considered conversation, kept within this illustrative experience."
+      subtitle="A thoughtful exchange, shaped by curiosity and room to listen."
       activeTab="Messaging"
       onBack={() => navigation.goBack()}
     >
@@ -121,7 +86,7 @@ export default function MessagingScreen({ navigation, route }: Props) {
               <Text style={styles.chatStatus}>Illustrative conversation</Text>
             </View>
           </View>
-          <Text style={styles.online}>PREVIEW</Text>
+          <Text style={styles.online}>ILLUSTRATIVE</Text>
         </View>
 
         <View style={styles.messagesList}>

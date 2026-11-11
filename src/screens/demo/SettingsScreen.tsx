@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
-import {
-  DemoNotice,
-  DemoScreenShell,
-} from '../../components/DemoComponents';
+import { DemoScreenShell } from '../../components/DemoComponents';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { DemoStackParamList } from '../../navigation/types';
 import { COLORS } from '../../theme/colors';
@@ -52,11 +49,9 @@ export default function SettingsScreen({ navigation }: Props) {
     <DemoScreenShell
       title="Your space, your pace."
       subtitle="Thoughtful choices for a more considered experience."
+      activeTab="Settings"
       onBack={() => navigation.goBack()}
     >
-      <DemoNotice>
-        Your choices here are for display only.
-      </DemoNotice>
       <View style={styles.group}>
         <Text style={styles.groupTitle}>PREFERENCES</Text>
         <SettingRow

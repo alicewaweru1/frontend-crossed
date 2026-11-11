@@ -11,7 +11,7 @@ import { RADIUS, SPACING } from '../../theme/spacing';
 type Props = NativeStackScreenProps<DemoStackParamList, 'Discovery'>;
 
 export default function DiscoveryScreen({ navigation }: Props) {
-  const { profile } = useDemoProfile();
+  const { profile, completeDiscovery } = useDemoProfile();
   const [pulse] = useState(() => new Animated.Value(0.82));
   const preferences = [...profile.interests.slice(0, 2), ...profile.values.slice(0, 2)];
 
@@ -23,19 +23,22 @@ export default function DiscoveryScreen({ navigation }: Props) {
       ]),
     );
     animation.start();
-    const timer = setTimeout(() => navigation.replace('FiveCrosses'), 2200);
+    const timer = setTimeout(() => {
+      completeDiscovery();
+      navigation.replace('FiveCrosses');
+    }, 2200);
 
     return () => {
       animation.stop();
       clearTimeout(timer);
     };
-  }, [navigation, pulse]);
+  }, [completeDiscovery, navigation, pulse]);
 
   return (
     <DemoScreenShell
       title="Taking a thoughtful pause."
-      subtitle="A visual illustration of how your choices could shape a more intentional introduction."
-      hideBottomTabs
+      subtitle="Bringing your interests, values and pace into a considered view."
+      activeTab="FiveCrosses"
       onBack={() => navigation.goBack()}
     >
       <View style={styles.centerpiece}>
@@ -51,14 +54,14 @@ export default function DiscoveryScreen({ navigation }: Props) {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardLabel}>IN THIS PREVIEW</Text>
+        <Text style={styles.cardLabel}>WHAT MATTERS TO YOU</Text>
         <View style={styles.pills}>
           {preferences.length > 0
             ? preferences.map((item) => <Pill key={item}>{item}</Pill>)
             : <Text style={styles.empty}>A little room for discovery</Text>}
         </View>
       </View>
-      <Text style={styles.disclosure}>An illustrative journey using fictional profiles.</Text>
+      <Text style={styles.disclosure}>Illustrative introductions</Text>
     </DemoScreenShell>
   );
 }

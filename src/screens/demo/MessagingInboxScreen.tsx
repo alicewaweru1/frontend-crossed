@@ -11,10 +11,14 @@ import type { DemoStackParamList } from '../../navigation/types';
 import { COLORS } from '../../theme/colors';
 import { RADIUS, SPACING } from '../../theme/spacing';
 import { INTRODUCTIONS, MESSAGE_EXAMPLES } from './demoData';
+import { useLocalConversations } from '../../context/LocalConversationsContext';
 
 type Props = NativeStackScreenProps<DemoStackParamList, 'MessagingInbox'>;
 
 export default function MessagingInboxScreen({ navigation }: Props) {
+  const { conversationIds, messagesByProfile, openConversation } = useLocalConversations();
+  const profileIds = [...new Set([...MESSAGE_EXAMPLES.map((message) => message.id), ...conversationIds])];
+
   return (
     <DemoScreenShell
       title="Conversations."
@@ -23,16 +27,25 @@ export default function MessagingInboxScreen({ navigation }: Props) {
     >
       <DemoNotice>Illustrative conversations</DemoNotice>
       <View style={styles.inbox}>
-        {MESSAGE_EXAMPLES.map((message, index) => {
-          const person = INTRODUCTIONS.find((item) => item.id === message.id);
+        {profileIds.map((profileId, index) => {
+          const person = INTRODUCTIONS.find((item) => item.id === profileId);
           if (!person) {
             return null;
           }
+          const sampleMessage = MESSAGE_EXAMPLES.find((message) => message.id === person.id);
+          const localMessages = messagesByProfile[person.id];
+          const preview =
+            localMessages?.[localMessages.length - 1]?.text ??
+            sampleMessage?.preview ??
+            person.response;
 
           return (
             <Pressable
-              key={message.id}
-              onPress={() => navigation.navigate('Messaging', { profileId: person.id })}
+              key={person.id}
+              onPress={() => {
+                openConversation(person);
+                navigation.navigate('Messaging', { profileId: person.id });
+              }}
               style={({ pressed }) => [styles.thread, pressed && styles.pressed]}
               accessibilityRole="button"
               accessibilityLabel={`Open illustrative conversation with ${person.name}`}
@@ -41,9 +54,13 @@ export default function MessagingInboxScreen({ navigation }: Props) {
               <View style={styles.threadContent}>
                 <View style={styles.nameLine}>
                   <Text style={styles.name}>{person.name}</Text>
-                  <Text style={styles.time}>{['9:17 AM', 'Yesterday', 'Mon'][index]}</Text>
+                  <Text style={styles.time}>
+                    {sampleMessage
+                      ? ['9:17 AM', 'Yesterday', 'Mon'][MESSAGE_EXAMPLES.indexOf(sampleMessage)]
+                      : 'Now'}
+                  </Text>
                 </View>
-                <Text style={styles.preview} numberOfLines={2}>{message.preview}</Text>
+                  <Text style={styles.preview} numberOfLines={2}>{preview}</Text>
               </View>
               <Text style={styles.chevron}>›</Text>
             </Pressable>

@@ -20,6 +20,8 @@ const AuthButton: React.FC<AuthButtonProps> = ({
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={title}
     >
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>

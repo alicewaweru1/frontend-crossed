@@ -12,6 +12,7 @@ import ProfileSetupScreen from '../screens/demo/ProfileSetupScreen';
 import ProfilePreviewScreen from '../screens/demo/ProfilePreviewScreen';
 import SettingsScreen from '../screens/demo/SettingsScreen';
 import { DemoProfileProvider } from '../context/DemoProfileContext';
+import { LocalConversationsProvider } from '../context/LocalConversationsContext';
 import type { DemoStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<DemoStackParamList>();
@@ -19,24 +20,26 @@ const Stack = createNativeStackNavigator<DemoStackParamList>();
 export default function DemoNavigator() {
   return (
     <DemoProfileProvider>
-      <Stack.Navigator
-        initialRouteName="ProfileSetup"
-        screenOptions={{
-          headerShown: false,
-          animation: 'fade_from_bottom',
-        }}
-      >
-        <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
-        <Stack.Screen name="DiscoveryIntro" component={DiscoveryIntroScreen} />
-        <Stack.Screen name="Discovery" component={DiscoveryScreen} />
-        <Stack.Screen name="DemoHome" component={DemoHomeScreen} />
-        <Stack.Screen name="FiveCrosses" component={FiveCrossesScreen} />
-        <Stack.Screen name="Connections" component={ConnectionsScreen} />
-        <Stack.Screen name="MessagingInbox" component={MessagingInboxScreen} />
-        <Stack.Screen name="Messaging" component={MessagingScreen} />
-        <Stack.Screen name="ProfilePreview" component={ProfilePreviewScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-      </Stack.Navigator>
+      <LocalConversationsProvider>
+        <Stack.Navigator
+          initialRouteName="DemoHome"
+          screenOptions={{
+            headerShown: false,
+            animation: 'fade_from_bottom',
+          }}
+        >
+          <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+          <Stack.Screen name="DiscoveryIntro" component={DiscoveryIntroScreen} />
+          <Stack.Screen name="Discovery" component={DiscoveryScreen} />
+          <Stack.Screen name="DemoHome" component={DemoHomeScreen} />
+          <Stack.Screen name="FiveCrosses" component={FiveCrossesScreen} />
+          <Stack.Screen name="Connections" component={ConnectionsScreen} />
+          <Stack.Screen name="MessagingInbox" component={MessagingInboxScreen} />
+          <Stack.Screen name="Messaging" component={MessagingScreen} />
+          <Stack.Screen name="ProfilePreview" component={ProfilePreviewScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+        </Stack.Navigator>
+      </LocalConversationsProvider>
     </DemoProfileProvider>
   );
 }

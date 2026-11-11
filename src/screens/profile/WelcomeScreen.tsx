@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -11,8 +11,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import { COLORS } from '../../theme/colors';
-import CrossedButton from '../../components/CrossedButton';
-import { RootStackParamList } from '../../navigation/types';
+import type { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -20,6 +19,11 @@ type Props = NativeStackScreenProps<
 >;
 
 export default function WelcomeScreen({ navigation }: Props) {
+  useEffect(() => {
+    const timer = setTimeout(() => navigation.replace('Onboarding'), 1400);
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top}>
@@ -38,10 +42,6 @@ export default function WelcomeScreen({ navigation }: Props) {
         </Text>
       </View>
       <View style={styles.footer}>
-        <CrossedButton
-          title="Enter Investor Preview"
-          onPress={() => navigation.navigate('Demonstration')}
-        />
         <Pressable
           style={({ pressed }) => [styles.onboardingAction, pressed && styles.pressed]}
           onPress={() => navigation.navigate('Onboarding')}

@@ -22,11 +22,11 @@ export default function DiscoveryIntroScreen({ navigation }: Props) {
   return (
     <DemoScreenShell
       title="A more considered introduction."
-      subtitle="Your sample profile is ready. Here is how your choices shape the experience."
-      hideBottomTabs
+      subtitle="Your choices bring a more considered set of stories into view."
+      activeTab="FiveCrosses"
       onBack={() => navigation.navigate('ProfileSetup')}
     >
-      <DemoNotice>Illustrative preferences, selected for {avatar.name}</DemoNotice>
+      <DemoNotice>A profile shaped around {avatar.name}</DemoNotice>
       <View style={styles.profileCard}>
         <View style={[styles.avatar, { backgroundColor: avatar.background }]}>
           <Text style={[styles.avatarText, { color: avatar.foreground }]}>{avatar.initials}</Text>
@@ -34,7 +34,7 @@ export default function DiscoveryIntroScreen({ navigation }: Props) {
         </View>
         <View style={styles.profileCopy}>
           <Text style={styles.profileName}>{avatar.name}</Text>
-          <Text style={styles.profileSub}>A fictional profile for this preview</Text>
+          <Text style={styles.profileSub}>Illustrative profile</Text>
         </View>
       </View>
 
@@ -51,7 +51,7 @@ export default function DiscoveryIntroScreen({ navigation }: Props) {
       <View style={styles.promise}>
         <Text style={styles.promiseMark}>✳</Text>
         <Text style={styles.promiseText}>
-          The next screen will illustrate how shared interests, values and pace can inform five thoughtful introductions.
+          Interests, values and pace can help bring meaningful stories into view.
         </Text>
       </View>
 
@@ -62,13 +62,6 @@ export default function DiscoveryIntroScreen({ navigation }: Props) {
       >
         <Text style={styles.primaryButtonText}>Find My Five Crosses</Text>
         <Text style={styles.primaryArrow}>›</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => navigation.navigate('ProfileSetup')}
-        style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}
-        accessibilityRole="button"
-      >
-        <Text style={styles.secondaryText}>Edit my sample preferences</Text>
       </Pressable>
     </DemoScreenShell>
   );
@@ -179,16 +172,6 @@ const styles = StyleSheet.create({
     color: COLORS.secondary,
     fontSize: 22,
     lineHeight: 24,
-  },
-  secondaryButton: {
-    minHeight: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryText: {
-    color: COLORS.primary,
-    fontSize: 12,
-    fontWeight: '700',
   },
   pressed: {
     opacity: 0.75,

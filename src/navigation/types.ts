@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Welcome: undefined;
   Onboarding: undefined;
   Authentication: NavigatorScreenParams<AuthStackParamList> | undefined;
-  Demonstration: undefined;
+  Demonstration: NavigatorScreenParams<DemoStackParamList> | undefined;
 };
 
 export type AuthStackParamList = {

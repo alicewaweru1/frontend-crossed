@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, type LinkingOptions } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import WelcomeScreen from '../screens/profile/WelcomeScreen';
 import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
@@ -45,34 +46,24 @@ const linking: LinkingOptions<RootStackParamList> = {
 
 export default function RootNavigator() {
   return (
-    <NavigationContainer linking={linking}>
-      <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-        />
-
-        <Stack.Screen
-          name="Onboarding"
-          component={OnboardingScreen}
-        />
-
-        <Stack.Screen
-          name="Authentication"
-          component={AuthNavigator}
-        />
-
-        <Stack.Screen
-          name="Demonstration"
-          component={DemoNavigator}
-          options={{ animation: 'slide_from_right' }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer linking={linking}>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Authentication" component={AuthNavigator} />
+          <Stack.Screen
+            name="Demonstration"
+            component={DemoNavigator}
+            options={{ animation: 'slide_from_right' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

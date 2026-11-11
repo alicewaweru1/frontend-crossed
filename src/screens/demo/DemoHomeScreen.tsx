@@ -11,10 +11,12 @@ import type { DemoStackParamList } from '../../navigation/types';
 import { FEATURED_INTRODUCTION } from './demoData';
 import { COLORS } from '../../theme/colors';
 import { RADIUS, SPACING } from '../../theme/spacing';
+import { useDemoProfile } from '../../context/DemoProfileContext';
 
 type Props = NativeStackScreenProps<DemoStackParamList, 'DemoHome'>;
 
 export default function DemoHomeScreen({ navigation }: Props) {
+  const { profile } = useDemoProfile();
   return (
     <DemoScreenShell
       title="Meet with intention."
@@ -36,11 +38,13 @@ export default function DemoHomeScreen({ navigation }: Props) {
           Curated, not endless. Take your time getting to know each story.
         </Text>
         <Pressable
-          onPress={() => navigation.navigate('FiveCrosses')}
+          onPress={() => navigation.navigate(profile.isComplete ? 'DiscoveryIntro' : 'ProfileSetup')}
           style={styles.heroButton}
           accessibilityRole="button"
         >
-          <Text style={styles.heroButtonText}>Discover the Five Crosses</Text>
+          <Text style={styles.heroButtonText}>
+            {profile.isComplete ? 'Find My Five Crosses' : 'Shape your introduction'}
+          </Text>
           <Text style={styles.heroArrow}>↗</Text>
         </Pressable>
       </View>

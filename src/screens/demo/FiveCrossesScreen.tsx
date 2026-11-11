@@ -21,10 +21,12 @@ export default function FiveCrossesScreen({ navigation }: Props) {
   useEffect(() => {
     if (!profile.isComplete) {
       navigation.replace('ProfileSetup');
+    } else if (!profile.discoveryComplete) {
+      navigation.replace('DiscoveryIntro');
     }
-  }, [navigation, profile.isComplete]);
+  }, [navigation, profile.discoveryComplete, profile.isComplete]);
 
-  if (!profile.isComplete) {
+  if (!profile.isComplete || !profile.discoveryComplete) {
     return null;
   }
 
@@ -74,7 +76,7 @@ export default function FiveCrossesScreen({ navigation }: Props) {
           <Text style={styles.resultsSubtitle}>Your selections shaped this illustrative set.</Text>
         </View>
       </View>
-      <DemoNotice>Fictional profiles · illustrative selection logic</DemoNotice>
+      <DemoNotice>Illustrative profiles</DemoNotice>
       {results.map(({ person, reasons }, index) => (
         <Pressable
           key={person.id}

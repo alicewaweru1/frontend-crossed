@@ -95,8 +95,7 @@ export default function ProfileSetupScreen({ navigation }: Props) {
     <DemoScreenShell
       title="Your Crossed profile."
       subtitle="A few thoughtful choices shape this illustrative experience."
-      hideBottomTabs
-      onBack={handleBack}
+      activeTab="FiveCrosses"
     >
       <View style={styles.progressHeader}>
         <Text style={styles.progressLabel}>PROFILE SETUP</Text>
@@ -217,7 +216,7 @@ export default function ProfileSetupScreen({ navigation }: Props) {
           <Text style={styles.continueArrow}>›</Text>
         </Pressable>
       </View>
-      <Text style={styles.localNote}>Fictional details, kept in this preview.</Text>
+      <Text style={styles.localNote}>A fictional profile, created for this experience.</Text>
     </DemoScreenShell>
   );
 }

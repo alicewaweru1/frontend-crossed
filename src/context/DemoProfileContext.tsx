@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export type AvatarChoice = {
   id: string;
@@ -12,7 +12,7 @@ export type AvatarChoice = {
 export const DEMO_AVATARS: AvatarChoice[] = [
   { id: 'sunrise', initials: 'AM', name: 'Amani Mwangi', background: '#E8D5B6', foreground: '#174A3A', symbol: '☼' },
   { id: 'garden', initials: 'MT', name: 'Maya Thompson', background: '#D5E2D6', foreground: '#174A3A', symbol: '✿' },
-  { id: 'studio', initials: 'DK', name: 'Daniel Kamau', background: '#E7D7DC', foreground: '#51394A', symbol: '◈' },
+  { id: 'studio', initials: 'DK', name: 'Daniel Kamau', background: '#E8E3D8', foreground: '#174A3A', symbol: '◈' },
   { id: 'coast', initials: 'NO', name: 'Nia Okafor', background: '#D4E1E7', foreground: '#24495C', symbol: '≈' },
 ];
 
@@ -58,12 +58,14 @@ export type DemoProfile = {
   lifestyle: string[];
   qualities: string[];
   isComplete: boolean;
+  discoveryComplete: boolean;
 };
 
 type DemoProfileContextValue = {
   profile: DemoProfile;
   avatar: AvatarChoice;
   updateProfile: (updates: Partial<DemoProfile>) => void;
+  completeDiscovery: () => void;
 };
 
 const DemoProfileContext = createContext<DemoProfileContextValue | null>(null);
@@ -75,19 +77,26 @@ const initialProfile: DemoProfile = {
   lifestyle: ['Quiet weekends', 'Time outdoors'],
   qualities: ['Warm communication', 'Shared values'],
   isComplete: false,
+  discoveryComplete: false,
 };
 
 export function DemoProfileProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState(initialProfile);
+  const [discoveryComplete, setDiscoveryComplete] = useState(false);
   const avatar = DEMO_AVATARS.find((item) => item.id === profile.avatarId) ?? DEMO_AVATARS[0];
+  const updateProfile = useCallback((updates: Partial<DemoProfile>) => {
+    setProfile((current) => ({ ...current, ...updates }));
+    setDiscoveryComplete(false);
+  }, []);
+  const completeDiscovery = useCallback(() => setDiscoveryComplete(true), []);
   const value = useMemo(
     () => ({
-      profile,
+      profile: { ...profile, discoveryComplete },
       avatar,
-      updateProfile: (updates: Partial<DemoProfile>) =>
-        setProfile((current) => ({ ...current, ...updates })),
+      updateProfile,
+      completeDiscovery,
     }),
-    [profile, avatar],
+    [profile, avatar, discoveryComplete, updateProfile, completeDiscovery],
   );
 
   return <DemoProfileContext.Provider value={value}>{children}</DemoProfileContext.Provider>;
